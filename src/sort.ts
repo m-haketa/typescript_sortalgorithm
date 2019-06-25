@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
+interface ItemStatus {
+  moving: boolean
+  using: boolean
+}
+
 @Component({
   template: `
     <div id="list-complete-demo" class="demo">
@@ -10,7 +15,7 @@ import Component from 'vue-class-component'
         <span
           v-for="(item,index) in items"
           v-bind:key="item"
-          v-bind:class="{moving: isMoving(index)}"
+          v-bind:class="getStatus(index)"
           class="list-complete-item"
         >
           {{ item }}
@@ -20,14 +25,19 @@ import Component from 'vue-class-component'
   `
 })
 export default class BubbleSort extends Vue {
-  items = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-  itemMoving = [-1, -1]
+  itemCount = 9
+  items = [] as number[]
+  itemStatus = [] as ItemStatus[]
   doSort = false
   sortLogic = this.sortImpl()
 
   init() {
     this.sortLogic = this.sortImpl()
-    this.itemMoving = [-1, -1]
+    this.items = []
+    for (let i = 0; i < this.itemCount; i++) {
+      this.items.push(i + 1)
+      this.itemStatus.push({ moving: false, using: false })
+    }
     const _ = require('underscore')
     this.items = _.shuffle(this.items)
   }
@@ -50,14 +60,29 @@ export default class BubbleSort extends Vue {
     }, 1000)
   }
 
-  isMoving(no: number) {
-    return no === this.itemMoving[0] || no === this.itemMoving[1]
+  getStatus(index: number) {
+    return this.itemStatus[index]
+  }
+
+  _setitemStatus(moving: number[], using: number[] = []) {
+    for (let i = 0; i < this.itemCount; i++) {
+      this.itemStatus[i].moving = false
+      this.itemStatus[i].using = false
+    }
+
+    moving.forEach(index => {
+      this.itemStatus[index].moving = true
+    })
+
+    using.forEach(index => {
+      this.itemStatus[index].using = true
+    })
   }
 
   *sortImpl() {
     for (let i = 0; i < this.items.length; i++) {
       for (let j = this.items.length - 1; j > i; j--) {
-        this.itemMoving = [j - 1, j]
+        this._setitemStatus([j - 1, j])
         if (this.items[j - 1] > this.items[j]) {
           const swpTempArr = this.items.splice(j - 1, 1, this.items[j])
           this.items.splice(j, 1, swpTempArr[0])
@@ -67,7 +92,7 @@ export default class BubbleSort extends Vue {
       }
     }
 
-    this.itemMoving = [-1, -1]
+    this._setitemStatus([])
     while (true) {
       yield false
     }
