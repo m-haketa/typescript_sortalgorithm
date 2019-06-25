@@ -11,3 +11,8 @@
 .list-complete-leave-active {
   position: absolute;
 }
+
+.moving {
+  color: #f00;
+  font-weight: bold;
+}
