@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
+interface ItemData {
+  number: number
+  status: ItemStatus
+}
+
 interface ItemStatus {
   moving: boolean
   using: boolean
@@ -13,12 +18,12 @@ interface ItemStatus {
       <button v-on:click="stop">Stop</button>
       <transition-group name="list-complete" tag="p">
         <span
-          v-for="(item,index) in items"
-          v-bind:key="item"
-          v-bind:class="getStatus(index)"
+          v-for="item in items"
+          v-bind:key="item.number"
+          v-bind:class="item.status"
           class="list-complete-item"
         >
-          {{ item }}
+          {{ item.number }}
         </span>
       </transition-group>
     </div>
@@ -26,8 +31,7 @@ interface ItemStatus {
 })
 export default class BubbleSort extends Vue {
   itemCount = 9
-  items = [] as number[]
-  itemStatus = [] as ItemStatus[]
+  items = [] as ItemData[]
   doSort = false
   sortLogic = this.sortImpl()
 
@@ -35,8 +39,10 @@ export default class BubbleSort extends Vue {
     this.sortLogic = this.sortImpl()
     this.items = []
     for (let i = 0; i < this.itemCount; i++) {
-      this.items.push(i + 1)
-      this.itemStatus.push({ moving: false, using: false })
+      this.items.push({
+        number: i + 1,
+        status: { moving: false, using: false }
+      })
     }
     const _ = require('underscore')
     this.items = _.shuffle(this.items)
@@ -60,34 +66,34 @@ export default class BubbleSort extends Vue {
     }, 1000)
   }
 
-  getStatus(index: number) {
-    return this.itemStatus[index]
-  }
-
   _setitemStatus(moving: number[], using: number[] = []) {
     for (let i = 0; i < this.itemCount; i++) {
-      this.itemStatus[i].moving = false
-      this.itemStatus[i].using = false
+      this.items[i].status.moving = false
+      this.items[i].status.using = false
     }
 
     moving.forEach(index => {
-      this.itemStatus[index].moving = true
+      this.items[index].status.moving = true
     })
 
     using.forEach(index => {
-      this.itemStatus[index].using = true
+      this.items[index].status.using = true
     })
+  }
+
+  _swap(i: number, j: number) {
+    const swpTemp = this.items[j].number
+    this.items[j].number = this.items[i].number
+    this.items[i].number = swpTemp
   }
 
   *sortImpl() {
     for (let i = 0; i < this.items.length; i++) {
       for (let j = this.items.length - 1; j > i; j--) {
         this._setitemStatus([j - 1, j])
-        if (this.items[j - 1] > this.items[j]) {
-          const swpTempArr = this.items.splice(j - 1, 1, this.items[j])
-          this.items.splice(j, 1, swpTempArr[0])
+        if (this.items[j - 1].number > this.items[j].number) {
+          this._swap(j - 1, j)
         }
-
         yield true
       }
     }
