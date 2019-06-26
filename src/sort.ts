@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { Prop, PropSync } from 'vue-property-decorator'
 
 interface ItemData {
   number: number
@@ -14,8 +15,6 @@ interface ItemStatus {
 @Component({
   template: `
     <div id="list-complete-demo" class="demo">
-      <button v-on:click="start">Start</button>
-      <button v-on:click="stop">Stop</button>
       <transition-group name="list-complete" tag="p">
         <span
           v-for="item in items"
@@ -30,40 +29,32 @@ interface ItemStatus {
   `
 })
 export default class BubbleSort extends Vue {
-  itemCount = 9
-  items = [] as ItemData[]
-  doSort = false
+  @Prop() inititems!: number[]
+  @Prop() dosort!: boolean
+
+  itemCount = this.inititems ? this.inititems.length : 0
+  items = this._setitems()
   sortLogic = this.sortImpl()
 
-  init() {
-    this.sortLogic = this.sortImpl()
-    this.items = []
-    for (let i = 0; i < this.itemCount; i++) {
-      this.items.push({
-        number: i + 1,
-        status: { moving: false, using: false }
-      })
-    }
-    const _ = require('underscore')
-    this.items = _.shuffle(this.items)
-  }
-
-  stop() {
-    this.doSort = false
-  }
-
-  start() {
-    this.init()
+  _setitems(): ItemData[] {
     this.sort()
+    if (this.inititems === undefined) {
+      return []
+    }
+    return this.inititems.map(function(value: number) {
+      return { number: value, status: { moving: false, using: false } }
+    })
   }
 
   sort() {
-    this.doSort = true
+    //    this.dosort = true
     setTimeout(() => {
-      if (this.doSort === true && this.sortLogic.next()) {
-        this.sort()
+      if (this.dosort === true) {
+        this.sortLogic.next()
       }
+      this.sort()
     }, 1000)
+    return true
   }
 
   _setitemStatus(moving: number[], using: number[] = []) {

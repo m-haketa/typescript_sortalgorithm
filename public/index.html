@@ -12,7 +12,17 @@
       <strong>We're sorry but test doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app">
-      <bubble-sort></bubble-sort>
+      <button v-if="sorts.length === 0" v-on:click="start">開始</button>
+      <template v-if="sorts.length > 0">
+        <button v-on:click="resume">再開</button>
+        <button v-on:click="suspend">中断</button>
+        <button v-on:click="destory">消去して終了</button>
+      </template>
+      <component v-for="(sort,index) in sorts"
+         v-bind:key="index + JSON.stringify(items)"
+         v-bind:is="sort"
+         v-bind:inititems="items"
+         v-bind:dosort="dosort"></component>
     </div>
 
     <!-- built files will be auto injected -->
