@@ -16,11 +16,16 @@ export default class InsertionSort extends mixins(SortBase) {
           this.swap(j - 1, j)
           yield true
           j--
-
-          if (j > 0) {
+          if (j <= 0) {
+            break
+          } else {
             this.setitemStatus([j - 1, j])
+            if (this.items[j - 1].number <= this.items[j].number) {
+              yield true
+              break
+            }
           }
-        } while (j > 0 && this.items[j - 1].number > this.items[j].number)
+        } while (true)
       } else {
         yield true
       }
