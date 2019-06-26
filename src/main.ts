@@ -1,6 +1,7 @@
 import Vue, { Component } from 'vue'
 import App from './App.vue'
 import BubbleSort from './bubblesort'
+import InsertionSort from './insertionsort'
 
 Vue.config.productionTip = false
 
@@ -13,7 +14,8 @@ let vm = new Vue({
     dosort: true
   },
   components: {
-    'bubble-sort': BubbleSort
+    'bubble-sort': BubbleSort,
+    'insertion-sort': InsertionSort
   },
   methods: {
     start() {
@@ -27,8 +29,7 @@ let vm = new Vue({
       this.destory()
 
       this.sorts.push('bubble-sort')
-      this.sorts.push('bubble-sort')
-      this.sorts.push('bubble-sort')
+      this.sorts.push('insertion-sort')
     },
 
     resume() {
