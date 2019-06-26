@@ -1,6 +1,6 @@
 import Vue, { Component } from 'vue'
 import App from './App.vue'
-import BubbleSort from './sort'
+import BubbleSort from './bubblesort'
 
 Vue.config.productionTip = false
 
