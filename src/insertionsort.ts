@@ -47,10 +47,12 @@ export default class InsertionSort extends Vue {
   }
 
   sort() {
-    //    this.dosort = true
     setTimeout(() => {
       if (this.dosort === true) {
-        this.sortLogic.next()
+        const ret = this.sortLogic.next()
+        if (ret.done) {
+          return false
+        }
       }
       this.sort()
     }, 1000)
@@ -98,8 +100,5 @@ export default class InsertionSort extends Vue {
     }
 
     this._setitemStatus([])
-    while (true) {
-      yield false
-    }
   }
 }
