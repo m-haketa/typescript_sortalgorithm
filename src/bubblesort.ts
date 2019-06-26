@@ -3,6 +3,10 @@ import SortBase from './sortbase'
 
 @Component
 export default class BubbleSort extends mixins(SortBase) {
+  sortName() {
+    return 'バブルソート'
+  }
+
   *sortImpl() {
     for (let i = 0; i < this.items.length; i++) {
       for (let j = this.items.length - 1; j > i; j--) {

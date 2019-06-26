@@ -14,7 +14,8 @@ interface ItemStatus {
 
 @Component({
   template: `
-    <div id="list-complete-demo" class="demo">
+    <div class="demo">
+      <div>{{ sortName() }} : {{ sortCount }} 回</div>
       <transition-group name="list-complete" tag="p">
         <span
           v-for="item in items"
@@ -35,9 +36,12 @@ export default class SortBase extends Vue {
   itemCount = this.inititems ? this.inititems.length : 0
   items = this.setitems()
   sortLogic = this.sortImpl()
+  sortCount = 0
+
+  //初期化ロジック呼び出し用
+  dummy = this.init()
 
   setitems(): ItemData[] {
-    this.sort()
     if (this.inititems === undefined) {
       return []
     }
@@ -72,12 +76,29 @@ export default class SortBase extends Vue {
     using.forEach(index => {
       this.items[index].status.using = true
     })
+
+    this.sortCount++
   }
 
   swap(i: number, j: number) {
     const swpTemp = this.items[j].number
     this.items[j].number = this.items[i].number
     this.items[i].number = swpTemp
+  }
+
+  init() {
+    this.sortCount = 0
+    this.sortLogic = this.sortImpl()
+    this.sort()
+  }
+
+  initImpl() {
+    //個々のソートアルゴリズムごとに実装する
+  }
+
+  sortName() {
+    //個々のソートアルゴリズムごとに実装する
+    return 'dummy'
   }
 
   *sortImpl() {

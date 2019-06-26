@@ -3,6 +3,10 @@ import SortBase from './sortbase'
 
 @Component
 export default class InsertionSort extends mixins(SortBase) {
+  sortName() {
+    return 'インサーションソート'
+  }
+
   *sortImpl() {
     for (let i = 1; i < this.items.length; i++) {
       this.setitemStatus([i - 1, i])

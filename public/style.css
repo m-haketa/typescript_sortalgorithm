@@ -1,3 +1,13 @@
+.demo {
+  border: 1px #aaa solid;
+  margin-top: 1em;
+  margin-bottom: 1em;  
+}
+
+.demo p {
+  margin-block-start: 0.5em;
+}
+
 .list-complete-item {
   transition: all 1s;
   display: inline-block;
@@ -10,6 +20,11 @@
 }
 .list-complete-leave-active {
   position: absolute;
+}
+
+.list-compliete-demo {
+  border: 1px;
+  margin-bottom: 1em;
 }
 
 .moving {
