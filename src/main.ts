@@ -2,7 +2,6 @@ import Vue, { Component } from 'vue'
 import App from './App.vue'
 import BubbleSort from './bubblesort'
 import InsertionSort from './insertionsort'
-import OverrideTestSort from './overridetest'
 
 Vue.config.productionTip = false
 
@@ -16,8 +15,7 @@ let vm = new Vue({
   },
   components: {
     'bubble-sort': BubbleSort,
-    'insertion-sort': InsertionSort,
-    'overridetest-sort': OverrideTestSort
+    'insertion-sort': InsertionSort
   },
   methods: {
     start() {
@@ -32,7 +30,6 @@ let vm = new Vue({
 
       this.sorts.push('bubble-sort')
       this.sorts.push('insertion-sort')
-      this.sorts.push('overridetest-sort') //※うまく動かない
     },
 
     resume() {
