@@ -32,7 +32,7 @@ let vm = new Vue({
 
       this.sorts.push('bubble-sort')
       this.sorts.push('insertion-sort')
-      this.sorts.push('other-sort')
+      //this.sorts.push('other-sort') ※うまく動かない
     },
 
     resume() {
