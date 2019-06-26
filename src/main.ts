@@ -19,6 +19,8 @@ let vm = new Vue({
   },
   methods: {
     start() {
+      this.destory()
+
       this.items = []
       for (let i = 0; i < this.itemCount; i++) {
         this.items.push(i + 1)
@@ -26,10 +28,10 @@ let vm = new Vue({
       const _ = require('underscore')
       this.items = _.shuffle(this.items)
 
-      this.destory()
-
       this.sorts.push('bubble-sort')
       this.sorts.push('insertion-sort')
+
+      this.dosort = true
     },
 
     resume() {
@@ -41,6 +43,7 @@ let vm = new Vue({
     },
 
     destory() {
+      this.suspend()
       for (let i = 0; i < this.items.length; i++) {
         this.sorts.pop()
       }
