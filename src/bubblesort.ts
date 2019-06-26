@@ -33,10 +33,10 @@ export default class BubbleSort extends Vue {
   @Prop() dosort!: boolean
 
   itemCount = this.inititems ? this.inititems.length : 0
-  items = this._setitems()
+  items = this.setitems()
   sortLogic = this.sortImpl()
 
-  _setitems(): ItemData[] {
+  setitems(): ItemData[] {
     this.sort()
     if (this.inititems === undefined) {
       return []
@@ -59,7 +59,7 @@ export default class BubbleSort extends Vue {
     return true
   }
 
-  _setitemStatus(moving: number[], using: number[] = []) {
+  setitemStatus(moving: number[], using: number[] = []) {
     for (let i = 0; i < this.itemCount; i++) {
       this.items[i].status.moving = false
       this.items[i].status.using = false
@@ -74,7 +74,7 @@ export default class BubbleSort extends Vue {
     })
   }
 
-  _swap(i: number, j: number) {
+  swap(i: number, j: number) {
     const swpTemp = this.items[j].number
     this.items[j].number = this.items[i].number
     this.items[i].number = swpTemp
@@ -83,14 +83,14 @@ export default class BubbleSort extends Vue {
   *sortImpl() {
     for (let i = 0; i < this.items.length; i++) {
       for (let j = this.items.length - 1; j > i; j--) {
-        this._setitemStatus([j - 1, j])
+        this.setitemStatus([j - 1, j])
         if (this.items[j - 1].number > this.items[j].number) {
-          this._swap(j - 1, j)
+          this.swap(j - 1, j)
         }
         yield true
       }
     }
 
-    this._setitemStatus([])
+    this.setitemStatus([])
   }
 }
